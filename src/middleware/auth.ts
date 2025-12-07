@@ -7,7 +7,7 @@ const auth = (...roles: string[]) => {
         try {
             const bearerToken = req.headers.authorization;
             if (!bearerToken || !bearerToken.startsWith('Bearer ')) {
-                return res.status(403).json({ message: "No token provided" })
+                return res.status(403).json({ message: "Restricted! You are not allowed" })
             }
              const token  = bearerToken.split(' ')[1]
             const decoded = jwt.verify(token as string, config.jwtSecret as string) as JwtPayload
