@@ -1,20 +1,15 @@
 import express, { NextFunction, Request, Response } from "express";
 import initDB from "./config/db";
-import logger from "./middleware/logger";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { userRoutes } from "./modules/user/user.routes";
 import { vehicleRoutes } from "./modules/vehicle/vehicle.routes";
+import { bookingRoutes } from "./modules/booking/booking.routes";
 // import { todoRoutes } from "./modules/todo/todo.routes";
 
 const app = express()
 
 // initializing DB
 initDB()
-
-
-app.get("/", logger, (req: Request, res: Response) => {
-    res.send("Hello Next Level Developers!");
-});
 
 app.use(express.json())
 // app.use(express.urlencoded())
@@ -28,7 +23,7 @@ app.use("/api/v1/users", userRoutes);
 
 app.use("/api/v1/vehicles", vehicleRoutes);
 
-// app.use("/api/v1/bookings", bookingRoutes);
+app.use("/api/v1/bookings", bookingRoutes);
 
 app.use("/api/v1/auth", authRoutes)
 

@@ -19,10 +19,18 @@ const getUser = async (req: Request, res: Response) => {
     }
 }
 
-const updateUser =  async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response) => {
     const payload = req.body
     try {
-        const result = await userServices.updateUser(req.params.id as string, payload);
+        console.log(req.user!.id);
+        console.log(req.params.userId);
+         if (req.user!.role === "customer" && req.user!.id !== Number(req.params.userId)) {
+            return res.status(403).json({
+                success: false,
+                message: "You can only update your own profile!"
+            });
+        }
+        const result = await userServices.updateUser(req.params.userId as string, payload, req.user!.role) as any;
         if (result.rows.length === 0) {
             res.status(404).json({
                 success: false,
@@ -47,7 +55,7 @@ const updateUser =  async (req: Request, res: Response) => {
 
 const deleteUser = async (req: Request, res: Response) => {
     try {
-        const result = await userServices.deleteUser(req.params.id as string);
+        const result = await userServices.deleteUser(req.params.userId as string);
         if (result.rowCount === 0) {
             res.status(404).json({
                 success: false,
@@ -71,5 +79,5 @@ const deleteUser = async (req: Request, res: Response) => {
 
 
 export const userControllers = {
-     getUser, updateUser, deleteUser
+    getUser, updateUser, deleteUser
 }

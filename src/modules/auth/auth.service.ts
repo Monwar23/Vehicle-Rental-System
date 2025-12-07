@@ -14,8 +14,8 @@ const loginUser = async (email: string, password: string) => {
         throw new Error("Invalid Credentials");
     }
     delete user.password
-    const token = jwt.sign({name: user.name, email: user.email, role: user.role}, config.jwtSecret as string, {
-        expiresIn: "28d"
+    const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: user.role}, config.jwtSecret as string, {
+        expiresIn: "7d"
     })
     console.log({token});
     return {token, user }
